@@ -26,9 +26,12 @@ import moe.lyrebird.view.components.FxComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+
+import java.util.concurrent.CompletableFuture;
 
 import static moe.lyrebird.view.components.FxComponent.CONTROL_BAR;
 
@@ -83,12 +86,13 @@ public class RootScreenController implements FxmlController {
      * @param FxComponent The FxComponent to load.
      */
     public void setContent(final FxComponent FxComponent) {
-        LOG.info("Switching content of root pane to {}", FxComponent);
-        final Pane contentNode = this.easyFxml
-                .loadNode(FxComponent)
-                .getNode()
-                .getOrElseGet(ExceptionHandler::fromThrowable);
-        this.contentPane.setCenter(contentNode);
+        CompletableFuture.supplyAsync(() -> {
+            LOG.info("Switching content of root pane to {}", FxComponent);
+            return this.easyFxml
+                    .loadNode(FxComponent)
+                    .getNode()
+                    .getOrElseGet(ExceptionHandler::fromThrowable);
+        }).thenAcceptAsync(this.contentPane::setCenter, Platform::runLater);
     }
 
 }
