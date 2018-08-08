@@ -27,9 +27,6 @@ import org.springframework.context.annotation.Import;
 import dorkbox.util.OS;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import moe.lyrebird.api.client.LyrebirdServerClientConfiguration;
-import moe.lyrebird.model.interrupts.CleanupService;
-import moe.lyrebird.model.update.compatibility.PostUpdateCompatibilityHelper;
 import moe.lyrebird.view.LyrebirdUiManager;
 import moe.tristan.easyfxml.spring.application.FxSpringApplication;
 import moe.tristan.easyfxml.spring.application.FxSpringContext;
@@ -54,7 +51,7 @@ import moe.tristan.easyfxml.spring.application.FxUiManager;
  */
 @SpringBootApplication
 @EnableCaching
-@Import({FxSpringContext.class, LyrebirdServerClientConfiguration.class})
+@Import({FxSpringContext.class})
 public class Lyrebird extends FxSpringApplication {
 
     /**
@@ -65,7 +62,6 @@ public class Lyrebird extends FxSpringApplication {
      * @param args The command line arguments given on JAR execution. Usually empty.
      */
     public static void main(final String[] args) {
-        PostUpdateCompatibilityHelper.getInstance().executeCompatibilityTasks();
         if (OS.isMacOsX()) {
             System.setProperty("javafx.macosx.embedded", "true");
         }
@@ -83,7 +79,6 @@ public class Lyrebird extends FxSpringApplication {
      */
     @Override
     public void stop() {
-        springContext.getBean(CleanupService.class).executeCleanupOperations();
         super.stop();
         System.exit(0);
     }

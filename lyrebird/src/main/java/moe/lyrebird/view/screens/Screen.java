@@ -22,24 +22,14 @@ import moe.tristan.easyfxml.api.FxmlController;
 import moe.tristan.easyfxml.api.FxmlFile;
 import moe.tristan.easyfxml.api.FxmlNode;
 import moe.lyrebird.view.components.FxComponent;
-import moe.lyrebird.view.screens.credits.CreditsScreenController;
-import moe.lyrebird.view.screens.login.LoginScreenController;
-import moe.lyrebird.view.screens.newtweet.NewTweetController;
 import moe.lyrebird.view.screens.root.RootScreenController;
-import moe.lyrebird.view.screens.update.UpdateScreenController;
-import moe.lyrebird.view.screens.user.UserViewController;
 
 /**
  * This enumeration's members are {@link FxmlNode}s which have their own window and embed {@link FxComponent} nodes.
  */
 public enum Screen implements FxmlNode {
 
-    ROOT_VIEW("root/RootView.fxml", RootScreenController.class),
-    LOGIN_VIEW("login/Login.fxml", LoginScreenController.class),
-    NEW_TWEET_VIEW("newtweet/NewTweet.fxml", NewTweetController.class),
-    CREDITS_VIEW("credits/Credits.fxml", CreditsScreenController.class),
-    UPDATE_VIEW("update/Update.fxml", UpdateScreenController.class),
-    USER_VIEW("user/UserView.fxml", UserViewController.class);
+    ROOT_VIEW("root/RootView.fxml", RootScreenController.class);
 
     private static final String SCREENS_BASE_PATH = "moe/lyrebird/view/screens/";
 

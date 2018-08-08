@@ -23,14 +23,9 @@ import moe.tristan.easyfxml.EasyFxml;
 import moe.tristan.easyfxml.api.FxmlController;
 import moe.tristan.easyfxml.model.exception.ExceptionHandler;
 import moe.tristan.easyfxml.model.fxml.FxmlLoadResult;
-import moe.tristan.easyfxml.util.Stages;
-import moe.lyrebird.model.sessions.SessionManager;
-import moe.lyrebird.model.update.UpdateService;
 import moe.lyrebird.view.components.FxComponent;
 import moe.lyrebird.view.screens.Screen;
-import moe.lyrebird.view.screens.newtweet.NewTweetController;
 import moe.lyrebird.view.screens.root.RootScreenController;
-import moe.lyrebird.view.util.Clipping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +38,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.List;
 
-import static moe.lyrebird.view.components.FxComponent.CURRENT_ACCOUNT;
-import static moe.lyrebird.view.components.FxComponent.DIRECT_MESSAGES;
-import static moe.lyrebird.view.components.FxComponent.MENTIONS;
 import static moe.lyrebird.view.components.FxComponent.TIMELINE;
-import static moe.lyrebird.view.screens.Screen.CREDITS_VIEW;
-import static moe.lyrebird.view.screens.Screen.NEW_TWEET_VIEW;
 import static moe.tristan.easyfxml.model.exception.ExceptionHandler.displayExceptionPane;
 
 /**
@@ -82,21 +72,15 @@ public class ControlBarController implements FxmlController {
 
     private final EasyFxml easyFxml;
     private final RootScreenController rootScreenController;
-    private final SessionManager sessionManager;
-    private final UpdateService updateService;
 
     private final Property<HBox> currentViewButton;
 
     public ControlBarController(
             final EasyFxml easyFxml,
-            final RootScreenController rootScreenController,
-            final SessionManager sessionManager,
-            final UpdateService updateService
+            final RootScreenController rootScreenController
     ) {
         this.easyFxml = easyFxml;
         this.rootScreenController = rootScreenController;
-        this.sessionManager = sessionManager;
-        this.updateService = updateService;
         this.currentViewButton = new SimpleObjectProperty<>(null);
     }
 
@@ -114,22 +98,8 @@ public class ControlBarController implements FxmlController {
         setUpTweetButton();
 
         bindActionImageToLoadingView(timeline, TIMELINE);
-        bindActionImageToLoadingView(mentions, MENTIONS);
-        bindActionImageToLoadingView(directMessages, DIRECT_MESSAGES);
-
-        credits.setOnMouseClicked(
-                e -> easyFxml.loadNode(CREDITS_VIEW)
-                             .orExceptionPane()
-                             .map(pane -> Stages.stageOf("Credits", pane))
-                             .andThen(Stages::scheduleDisplaying)
-        );
-
-        sessionManager.isLoggedInProperty().addListener((o, prev, cur) -> handleLogStatusChange(prev, cur));
-        handleLogStatusChange(false, sessionManager.isLoggedInProperty().getValue());
         loadCurrentAccountPanel();
 
-        update.managedProperty().bind(updateService.isUpdateAvailableProperty());
-        update.visibleProperty().bind(updateService.isUpdateAvailableProperty());
         update.setOnMouseClicked(e -> openUpdatesScreen());
     }
 
@@ -138,21 +108,12 @@ public class ControlBarController implements FxmlController {
      */
     private void setUpTweetButton() {
         tweet.setOnMouseClicked(e -> this.openTweetWindow());
-        tweet.setClip(Clipping.getCircleClip(28.0));
     }
 
     /**
      * Loads the current user's account view on the top of the bar.
      */
     private void loadCurrentAccountPanel() {
-        easyFxml.loadNode(CURRENT_ACCOUNT)
-                .getNode()
-                .onSuccess(container::setTop)
-                .onFailure(err -> displayExceptionPane(
-                        "Could not load current user!",
-                        "There was an error mapping the current session to a twitter account.",
-                        err
-                ));
     }
 
     /**
@@ -161,18 +122,6 @@ public class ControlBarController implements FxmlController {
      * @see Screen#NEW_TWEET_VIEW
      */
     private void openTweetWindow() {
-        LOG.info("Opening new tweet stage...");
-        final FxmlLoadResult<Pane, NewTweetController> newTweetViewLoadResult = this.easyFxml.loadNode(
-                NEW_TWEET_VIEW,
-                Pane.class,
-                NewTweetController.class
-        );
-        final Pane newTweetPane = newTweetViewLoadResult.getNode().getOrElseGet(ExceptionHandler::fromThrowable);
-        final NewTweetController newTweetController = newTweetViewLoadResult.getController().get();
-
-        Stages.stageOf("Tweet", newTweetPane)
-              .thenComposeAsync(Stages::scheduleDisplaying)
-              .thenAcceptAsync(newTweetController::setStage);
     }
 
     /**
@@ -215,8 +164,5 @@ public class ControlBarController implements FxmlController {
      * @see Screen#UPDATE_VIEW
      */
     private void openUpdatesScreen() {
-        final FxmlLoadResult<Pane, FxmlController> updateScreenLoadResult = easyFxml.loadNode(Screen.UPDATE_VIEW);
-        final Pane updatePane = updateScreenLoadResult.getNode().getOrElseGet(ExceptionHandler::fromThrowable);
-        Stages.stageOf("Updates", updatePane).thenAcceptAsync(Stages::scheduleDisplaying);
     }
 }

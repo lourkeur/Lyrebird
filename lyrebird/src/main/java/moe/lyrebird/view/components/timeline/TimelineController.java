@@ -20,11 +20,8 @@ package moe.lyrebird.view.components.timeline;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import moe.lyrebird.model.sessions.SessionManager;
-import moe.lyrebird.model.twitter.observables.Timeline;
-import moe.lyrebird.view.components.TimelineBasedController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import moe.tristan.easyfxml.api.FxmlController;
 
 /**
  * Mostly setup for default timeline view.
@@ -32,21 +29,12 @@ import org.slf4j.LoggerFactory;
  * @see TimelineBasedController
  */
 @Component
-public class TimelineController extends TimelineBasedController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TimelineController.class);
-
+public class TimelineController implements FxmlController {
     public TimelineController(
-            final Timeline timeline,
-            final SessionManager sessionManager,
             final ConfigurableApplicationContext context
     ) {
-        super(timeline, sessionManager, context, true);
     }
 
-    @Override
-    protected Logger getLogger() {
-        return LOG;
+    public void initialize() {
     }
-
 }

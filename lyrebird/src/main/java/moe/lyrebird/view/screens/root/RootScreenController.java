@@ -77,13 +77,6 @@ public class RootScreenController implements FxmlController {
      * container for the main view.
      */
     private void loadNotificationPane() {
-        LOG.debug("Initializing notification pane...");
-        final Pane notificationPane = this.easyFxml
-                .loadNode(FxComponent.NOTIFICATIONS_PANE)
-                .getNode()
-                .getOrElseGet(ExceptionHandler::fromThrowable);
-
-        this.contentPane.setTop(notificationPane);
     }
 
     /**
