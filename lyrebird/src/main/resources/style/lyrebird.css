@@ -1,0 +1,81 @@
+/*
+ *     Lyrebird, a free open-source cross-platform twitter client.
+ *     Copyright (C) 2017-2018, Tristan Deloche
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.root {
+    -fx-background: -fx-base;
+    -fx-background-dark: rgb(43, 43, 48);
+
+    -fx-accent: rgb(230, 241, 255);
+    -fx-focus-color: rgb(55, 122, 224);
+}
+
+.dark {
+    -fx-base: -fx-background-dark;
+    -fx-background-color: -fx-background-dark;
+}
+
+.transparent-dark-background-opacity {
+    -fx-background-color: rgba(43, 43, 48, 0.85);
+}
+
+.text-area {
+    -fx-stroke-width: 1;
+    -fx-background-color: snow;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.noFocus .list-view {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.list-view .list-cell:focused {
+    -fx-background-color: -fx-background;
+}
+
+.hoverableButton:hover {
+    -fx-background-color: #ebebeb;
+}
+
+.list-view .list-cell:focused .hoverableButton:hover {
+    -fx-background-color: #cdd8e6;
+}
+
+#tweet {
+    -fx-background-color: #1da1f2;
+}
+
+#tweetButton {
+    -fx-background-color: -fx-focus-color;
+}
+
+.hyperlink {
+    -fx-text-fill: #29618b !important;
+}
