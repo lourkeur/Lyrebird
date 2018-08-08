@@ -36,7 +36,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import static moe.lyrebird.view.components.FxComponent.TIMELINE;
 import static moe.tristan.easyfxml.model.exception.ExceptionHandler.displayExceptionPane;
@@ -132,7 +132,7 @@ public class ControlBarController implements FxmlController {
      * @param current  Whether the user is not logged-in
      */
     private void handleLogStatusChange(final boolean previous, final boolean current) {
-        List.of(
+        Stream.of(
                 timeline,
                 tweet,
                 mentions,
